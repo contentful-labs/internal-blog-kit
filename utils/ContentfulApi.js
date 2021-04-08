@@ -382,6 +382,11 @@ export default class ContentfulApi {
                     language
                     code
                   }
+                  ... on BlogPost {
+                    title
+                    slug
+                    excerpt
+                  }
                 }
               }
               assets {

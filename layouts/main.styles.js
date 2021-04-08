@@ -8,7 +8,9 @@ export default css.global`
     --color-tertiary: #84b9f5;
     --color-foreground: #283848;
     --color-background: #ffffff;
+    --color-background-tint: rgba(0,0,0,0.05);
     --color-muted: #666666;
+    --color-type: #000000;
 
     --grid-unit: 0.5rem;
 
@@ -43,7 +45,7 @@ export default css.global`
     font-size: 1rem;
     font-weight: var(--font-weight-light);
     font-family: var(--font-family-body);
-    color: var(--color-foreground);
+    color: var(--color-type);
     margin: 0;
   }
 

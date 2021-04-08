@@ -59,9 +59,18 @@
   font-family: var(--font-family-main);
   color: var(--color-foreground);
 }
+.page__li p {
+  margin-bottom: 0 !important;
+}
 
 .page__imgContainer {
   width: 100%;
   height: auto;
   margin: 1rem 0 2rem 0;
+}
+.page__imgContainer figcaption {
+  font-size: smaller;
+  font-style: italic;
+  text-align: center;
+  padding: 1em;
 }

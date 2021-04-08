@@ -17,8 +17,8 @@ function slugifyString(string) {
 }
 
 const DynamicCodeBlock = dynamic(() => import("./CodeBlock"));
-
 const DynamicVideoEmbed = dynamic(() => import("./VideoEmbed"));
+const DynamicRelatedPostCard = dynamic(() => import("./RelatedPostCard"));
 
 export function getRichTextRenderOptions(links, options) {
   const { renderH2Links, renderNativeImg } = options;
@@ -123,15 +123,22 @@ export function getRichTextRenderOptions(links, options) {
       [BLOCKS.EMBEDDED_ENTRY]: (node, children) => {
         const entry = entryBlockMap.get(node.data.target.sys.id);
         const { __typename } = entry;
-
+        // nested entries need to have vars of the same value be scoped to those bits
+        let title;
         switch (__typename) {
           case "VideoEmbed":
-            const { embedUrl, title } = entry;
+            const { embedUrl } = entry;
+            title = entry.title;
             return <DynamicVideoEmbed embedUrl={embedUrl} title={title} />;
           case "CodeBlock":
             const { language, code } = entry;
 
             return <DynamicCodeBlock language={language} code={code} />;
+          case "BlogPost":
+            const { excerpt, slug } = entry;
+            title = entry.title;
+            // SAN: suggest a new component in /components folder for postCard
+            return <DynamicRelatedPostCard title={title} slug={slug} excerpt={excerpt} />;
           default:
             return null;
         }
@@ -150,6 +157,7 @@ export function getRichTextRenderOptions(links, options) {
         } else {
           return (
             <div className={RichTextPageContentStyles.page__imgContainer}>
+              <figure>
               <Image
                 src={url}
                 alt={description}
@@ -157,6 +165,12 @@ export function getRichTextRenderOptions(links, options) {
                 width={width}
                 layout="responsive"
               />
+                {description ? (
+                  <figcaption>{description}</figcaption>
+                ) : (
+                  ''
+                )}
+              </figure>
             </div>
           );
         }
